@@ -508,6 +508,8 @@ public class Camera2BasicFragment extends Fragment
                     continue;
                 }
 
+                // 使用首个可用的Back摄像头
+                // 获得该摄像头可拍摄的最大宽高
                 // For still image captures, we use the largest available size.
                 Size largest = Collections.max(
                         Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
@@ -521,6 +523,9 @@ public class Camera2BasicFragment extends Fragment
                 // coordinate.
                 int displayRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
                 //noinspection ConstantConditions
+                // 获取相机传感器的方向("自然"状态下垂直放置为0, 顺时针算起, 每次加90读)
+                // 这个参数, 是由设备的生产商来决定的, 大多数情况下为90, 以下的switch这么写
+                // 是为了配适某些特殊的手机
                 mSensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
                 boolean swappedDimensions = false;
                 switch (displayRotation) {
@@ -565,6 +570,7 @@ public class Camera2BasicFragment extends Fragment
                 // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                 // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                 // garbage capture data.
+                // 第一个参数返回与SuerfaceTexture兼容的所有尺寸
                 mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
                         maxPreviewHeight, largest);
