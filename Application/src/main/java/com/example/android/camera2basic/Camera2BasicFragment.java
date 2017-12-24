@@ -542,6 +542,7 @@ public class Camera2BasicFragment extends Fragment
                     default:
                         Log.e(TAG, "Display rotation is invalid: " + displayRotation);
                 }
+//                swappedDimensions = false;
 
                 Point displaySize = new Point();
                 activity.getWindowManager().getDefaultDisplay().getSize(displaySize);
@@ -763,6 +764,7 @@ public class Camera2BasicFragment extends Fragment
         } else if (Surface.ROTATION_180 == rotation) {
             matrix.postRotate(180, centerX, centerY);
         }
+        matrix.postRotate(-90, centerX, centerY); // 改成竖屏显示
         mTextureView.setTransform(matrix);
     }
 
